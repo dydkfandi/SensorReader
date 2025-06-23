@@ -86,7 +86,7 @@ if __name__ == "__main__":
             data = gnss.get_data(block=False)
             if data:
                 timestamp = data['timestamp'].strftime("%H:%M:%S.%f")[:-3]
-                print(f"[{timestamp}] 位置: {data['location'].lat:.6f}, {data['location'].lon:.6f}, {data['altitude']:.2f}m | 定位: {data['fix_type']} | 卫星: {data['satellites']}")
+                print(f"[{timestamp}] 位置: {data['location'].lat:.6f}, {data['location'].lon:.6f}, {data['altitude']:.2f}m | 状态: {data['fix_type']} | 卫星数量: {data['satellites']}")
             time.sleep(0.01)
     except KeyboardInterrupt:
         print("\n测试已停止")
