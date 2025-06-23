@@ -109,9 +109,9 @@ class IMUReader:
 
                 return {
                     'timestamp': datetime.now(),
-                    'acceleration': (ax, ay, az),
+                    'acc': (ax, ay, az),
                     'gyro': (gx, gy, gz),
-                    'magnetometer':(mx, my, mz),
+                    'mag':(mx, my, mz),
                     'imu_temperature': imu_temperature,
                     'pressure': pressure,
                     'pressure_temperature': pressure_temperature,
