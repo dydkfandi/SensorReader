@@ -40,19 +40,6 @@ class GNSSReader:
 
                     # 尝试获取GPS时间
                     gps_time = datetime.now()  # 默认使用系统时间
-                    try:
-                        gps_msg = self._vehicle.message_factory.gps_raw_int_encode(
-                            0, gps.fix_type,
-                            int(self._vehicle.location.global_frame.lat * 1e7),
-                            int(self._vehicle.location.global_frame.lon * 1e7),
-                            int(self._vehicle.location.global_frame.alt * 1000),
-                            gps.satellites_visible
-                        )
-
-                        if hasattr(gps_msg, 'time_usec') and gps_msg.time_usec > 0:
-                            gps_time = datetime.utcfromtimestamp(gps_msg.time_usec / 1e6)
-                    except Exception as e:
-                        pass  # 使用系统时间作为备用
 
                     gnss_data = {
                         'timestamp': gps_time,
@@ -79,3 +66,29 @@ class GNSSReader:
             return self.data_queue.get(block=block, timeout=timeout)
         except queue.Empty:
             return None
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description='单独测试GNSS读取')
+    parser.add_argument('--connection_string', required=True, help='GNSS串口号')
+    args = argparse.Namespace(connection_string='COM8')
+    # args = parser.parse_args()
+
+    gnss = GNSSReader(args.connection_string)
+    gnss.start()
+
+    print(f"开始测试GNSS读取 - {args.connection_string}")
+    print("按 Ctrl+C 停止")
+
+    try:
+        while True:
+            data = gnss.get_data(block=False)
+            if data:
+                timestamp = data['timestamp'].strftime("%H:%M:%S.%f")[:-3]
+                print(f"[{timestamp}] 位置: {data['location'].lat:.6f}, {data['location'].lon:.6f}, {data['altitude']:.2f}m | 定位: {data['fix_type']} | 卫星: {data['satellites']}")
+            time.sleep(0.01)
+    except KeyboardInterrupt:
+        print("\n测试已停止")
+    finally:
+        gnss.stop()
