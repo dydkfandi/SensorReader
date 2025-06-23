@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 from imu_reader import IMUReader
 from gnss_reader import GNSSReader
 
-
 class Sensor(ABC):
     """传感器抽象基类"""
 
@@ -20,7 +19,6 @@ class Sensor(ABC):
     def get_data(self):
         """获取传感器数据"""
         pass
-
 
 class SensorFactory:
     """传感器工厂类，用于创建不同类型的传感器"""

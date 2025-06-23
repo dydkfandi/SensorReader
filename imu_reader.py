@@ -1,12 +1,10 @@
 import serial
 import queue
 import threading
-import time
 from datetime import datetime
 
 FDLINK_HEADER = b'\xFC'
 FDLINK_FOOTER = b'\xFD'
-
 
 class IMUReader:
     def __init__(self, port, baudrate=115200):
@@ -73,19 +71,13 @@ class IMUReader:
             imu_data = frame[data_start:data_end]
 
             if len(imu_data) >= 18:
-                ax = int.from_bytes(imu_data[0:2], 'little',
-                                    signed=True) / 16384.0
-                ay = int.from_bytes(imu_data[2:4], 'little',
-                                    signed=True) / 16384.0
-                az = int.from_bytes(imu_data[4:6], 'little',
-                                    signed=True) / 16384.0
+                ax = int.from_bytes(imu_data[0:2], 'little', signed=True) / 16384.0
+                ay = int.from_bytes(imu_data[2:4], 'little', signed=True) / 16384.0
+                az = int.from_bytes(imu_data[4:6], 'little', signed=True) / 16384.0
 
-                gx = int.from_bytes(imu_data[6:8], 'little',
-                                    signed=True) / 131.0
-                gy = int.from_bytes(imu_data[8:10], 'little',
-                                    signed=True) / 131.0
-                gz = int.from_bytes(imu_data[10:12], 'little',
-                                    signed=True) / 131.0
+                gx = int.from_bytes(imu_data[6:8], 'little', signed=True) / 131.0
+                gy = int.from_bytes(imu_data[8:10], 'little', signed=True) / 131.0
+                gz = int.from_bytes(imu_data[10:12], 'little', signed=True) / 131.0
 
                 return {
                     'timestamp': datetime.now(),

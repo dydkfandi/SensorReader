@@ -4,7 +4,6 @@ import time
 from datetime import datetime
 from dronekit import connect, VehicleMode, LocationGlobalRelative
 
-
 class GNSSReader:
     def __init__(self, connection_string):
         self.connection_string = connection_string
@@ -32,8 +31,7 @@ class GNSSReader:
 
     def _read_loop(self):
         try:
-            self._vehicle = connect(self.connection_string, wait_ready=True,
-                                    timeout=60)
+            self._vehicle = connect(self.connection_string, wait_ready=True, timeout=60)
             print(f"GNSS已启动 - {self.connection_string}")
 
             while not self._stop_event.is_set():
@@ -51,10 +49,8 @@ class GNSSReader:
                             gps.satellites_visible
                         )
 
-                        if hasattr(gps_msg,
-                                   'time_usec') and gps_msg.time_usec > 0:
-                            gps_time = datetime.utcfromtimestamp(
-                                gps_msg.time_usec / 1e6)
+                        if hasattr(gps_msg, 'time_usec') and gps_msg.time_usec > 0:
+                            gps_time = datetime.utcfromtimestamp(gps_msg.time_usec / 1e6)
                     except Exception as e:
                         pass  # 使用系统时间作为备用
 
