@@ -1,0 +1,4 @@
+sensors:
+  - type: imu
+    baudrate: 921600
+  - type: gnss
